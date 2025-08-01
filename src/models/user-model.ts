@@ -6,6 +6,7 @@ export class User extends Model {
   email!: string;
   senha!: string;
   nome!: string;
+  role!: "Gerente" | "Funcionario" | "Cliente"
 }
 
 User.init(
@@ -27,6 +28,9 @@ User.init(
     nome: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    role: {
+      type: DataTypes.ENUM('Gerente', 'Funcionario', 'Cliente')
     }
   },
   {
