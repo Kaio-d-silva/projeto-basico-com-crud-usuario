@@ -36,7 +36,7 @@ export default (router: Router): void => {
    *           description: O email do usuário
    *         role:
    *           type: string
-   *           description: tipo de permissão do usuario
+   *           description: O papel do usuario no sistema
    *       example:
    *         id: 1
    *         nome: "João da Silva"
