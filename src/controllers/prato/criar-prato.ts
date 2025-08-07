@@ -19,22 +19,24 @@ class CriarPratoController {
                     body: {error: "O valor deve ser numerico"}
                 }
             }
-            const prato = {
-                nome,
-                cozinha,
-                descricao_resumida,
-                descricao_detalhada,
-                imagem,
-                valor
-            }
-            // const prato = await Prato.create({
-            //     nome, 
+            // const prato = {
+            //     nome,
             //     cozinha,
             //     descricao_resumida,
             //     descricao_detalhada,
             //     imagem,
             //     valor
-            // });
+            // }
+
+            // console.log(testePrato)
+            const prato = await Prato.create({
+                nome, 
+                cozinha,
+                descricao_resumida,
+                descricao_detalhada,
+                imagem,
+                valor
+            });
             return {
                 statusCode: 201,
                 body: prato

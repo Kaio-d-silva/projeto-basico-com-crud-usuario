@@ -1,20 +1,31 @@
 import { HttpRequest, HttpResponse } from "../../interfaces"
+import Prato from "../../models/prato-model";
 
 class ListarPratosController {
-    async handle(): Promise<HttpResponse> {
+    async handle(httpRequest:HttpRequest): Promise<HttpResponse> {
         try {
 
-            const pratos = [
-                {
-                    "nome": "Feijoada",
-                    "cozinha": "Brasileira",
-                    "descricao_resumida": "Prato típico da culinária brasileira",
-                    "descricao_detalhada": "Prato feito com feijão preto e carne de porco",
-                    "imagem": "https://cdn.pixabay.com/photo/2025/04/24/01/29/trees-9554109_1280.jpg",
-                    "valor": "20,40"
-                  }
-            ]
+            const pratoId = httpRequest.params.id
+            const prato = await Prato.findByPk(pratoId)
+            if (!prato && pratoId !== '{id}' && pratoId !== undefined ){
+                return{
+                    statusCode: 404,
+                    body: { error: 'Prato não encontrado'}
+                }
+            }else if(pratoId !== '{id}' && pratoId !== undefined){
+                return{
+                    statusCode: 200,
+                    body: prato
+                }
+            }
 
+            const pratos = await Prato.findAll()
+            if (pratos.length === 0){
+                return{
+                    statusCode: 404,
+                    body: { error: 'Nenhum prato encontrado'}
+                }
+            }
             return{
                 statusCode: 200,
                 body: pratos
