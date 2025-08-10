@@ -1,7 +1,7 @@
-import { HttpRequest, HttpResponse } from "../../interfaces";
+import { Controller, HttpRequest, HttpResponse } from "../../interfaces";
 import Prato from "../../models/prato-model";
 
-class CriarPratoController {
+class CriarPratoController implements Controller {
     async handle(httpResquest: HttpRequest): Promise<HttpResponse>{
         try {
             const { nome, cozinha, descricao_resumida, descricao_detalhada, imagem, valor  } = httpResquest.body;

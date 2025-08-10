@@ -1,8 +1,7 @@
-import { HttpRequest, HttpResponse } from "../../interfaces";
-import { bodyParser } from "../../middlewares";
+import { Controller, HttpRequest, HttpResponse } from "../../interfaces";
 import Prato from "../../models/prato-model";
 
-class EditarPratoController {
+class EditarPratoController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const {
       nome,

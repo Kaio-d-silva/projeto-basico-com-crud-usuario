@@ -1,7 +1,7 @@
-import { HttpRequest, HttpResponse } from "../../interfaces"
+import { Controller,HttpRequest, HttpResponse } from "../../interfaces"
 import Prato from "../../models/prato-model";
 
-class ListarPratosController {
+class ListarPratosController implements Controller {
     async handle(httpRequest:HttpRequest): Promise<HttpResponse> {
         try {
 
