@@ -14,7 +14,6 @@ class EditarPratoController implements Controller {
     const { id } = httpRequest.params
     try {
       const prato = await Prato.findByPk(id)
-      console.log(`O id é : ${id}`)
       if (!prato){
         return{
           statusCode: 404,
