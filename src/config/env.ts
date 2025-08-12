@@ -12,4 +12,6 @@ export const ENV = {
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || '',
   JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
   NODE_ENV: process.env.NODE_ENV || "development",
+  API_VERSION: process.env.API_VERSION || 'v1',
+  UPDATE_MODEL: process.env.UPDATE_MODEL || false,
 };

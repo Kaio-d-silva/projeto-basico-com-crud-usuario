@@ -28,6 +28,7 @@ export default (router: Router): void => {
    */
   router.delete(
     "/pratos/:id",
+    authMiddleware,
     adaptRoute(new DeletarPratoController())
   );
 };

@@ -1,6 +1,7 @@
 import adaptRoute from "../adapters/express-route-adapter";
 import { Router } from "express";
 import CriarPratoController from "../controllers/prato/criar-prato";
+import { authMiddleware } from "../middlewares";
 
 export default (router: Router): void => {
   /**
@@ -83,5 +84,7 @@ export default (router: Router): void => {
    *         description: Algum erro aconteceu
    */
 
-    router.post("/pratos", adaptRoute(new CriarPratoController()))
+    router.post("/pratos",
+    authMiddleware, 
+    adaptRoute(new CriarPratoController()))
 };

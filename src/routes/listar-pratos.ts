@@ -1,6 +1,7 @@
 import { Router } from "express";
 import adaptRoute from "../adapters/express-route-adapter";
 import ListarPratosController from "../controllers/prato/listar-pratos";
+import { authMiddleware } from "../middlewares";
 
 export default (router:Router): void => {
     /**
@@ -28,5 +29,8 @@ export default (router:Router): void => {
    *               items:
    *                 $ref: '#/components/schemas/Prato'
    */
-    router.get('/pratos{/:id}', adaptRoute(new ListarPratosController()))
+    router.get(
+        '/pratos{/:id}',
+        authMiddleware,
+        adaptRoute(new ListarPratosController()))
 }
