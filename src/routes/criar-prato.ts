@@ -50,7 +50,7 @@ export default (router: Router): void => {
    *         descricao_resumida : Prato típico da culinária brasileira
    *         descricao_detalhada : Prato feito com feijão preto e carne de porco
    *         imagem : https://cdn.pixabay.com/photo/2025/04/24/01/29/trees-9554109_1280.jpg
-   *         valor : 20,40        
+   *         valor : 20.40        
    */
 
   /**
