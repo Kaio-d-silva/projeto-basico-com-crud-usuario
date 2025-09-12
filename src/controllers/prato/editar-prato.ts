@@ -1,8 +1,7 @@
-import { HttpRequest, HttpResponse } from "../../interfaces";
-import { bodyParser } from "../../middlewares";
+import { Controller, HttpRequest, HttpResponse } from "../../interfaces";
 import Prato from "../../models/prato-model";
 
-class EditarPratoController {
+class EditarPratoController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const {
       nome,
@@ -15,7 +14,6 @@ class EditarPratoController {
     const { id } = httpRequest.params
     try {
       const prato = await Prato.findByPk(id)
-      console.log(`O id é : ${id}`)
       if (!prato){
         return{
           statusCode: 404,

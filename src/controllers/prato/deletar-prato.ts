@@ -1,13 +1,11 @@
-import { parentPort } from "worker_threads";
-import { HttpRequest,HttpResponse } from "../../interfaces";
+import { Controller, HttpRequest,HttpResponse } from "../../interfaces";
 import Prato from "../../models/prato-model";
 
-class DeletarPratoController{
+class DeletarPratoController implements Controller {
     async handle(httpRequest:HttpRequest): Promise<HttpResponse>{
         const { id } = httpRequest.params
 
         try {
-            console.log(`teste de id ${id}`)
             const prato = await Prato.findByPk(id)
 
 
@@ -20,7 +18,7 @@ class DeletarPratoController{
             await prato.destroy();
             return{
                 statusCode: 204,
-                body: {}
+                body: {message: "Prato deletado com sucesso"}
             }
 
             
