@@ -31,7 +31,7 @@ export default (router: Router): void => {
    */
   router.get(
     "/users{/:id}",
-    authMiddleware,
+    // authMiddleware,
     adaptRoute(new ListarUsuarioController())
   );
 };
