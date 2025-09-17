@@ -11,3 +11,12 @@ export interface HttpResponse {
   statusCode: number;
   body: any;
 }
+
+export interface Pedidos {
+  usuarioId: number;
+  itens: Array<{
+    pratoId: number;
+    quantidade: number;
+    precoUnitario: number;
+  }>;
+}
