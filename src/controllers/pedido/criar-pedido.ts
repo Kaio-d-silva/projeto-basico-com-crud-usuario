@@ -1,45 +1,66 @@
-import { Controller, HttpRequest, HttpResponse } from "../../interfaces";
-import Prato from "../../models/prato-model";
+import { it } from "node:test";
+import { Controller, HttpRequest, HttpResponse, Pedidos } from "../../interfaces";
+import Pedido from "../../models/pedido-model";
 
-class CriarPratoController implements Controller {
+class CriarPedidoController implements Controller {
     async handle(httpResquest: HttpRequest): Promise<HttpResponse>{
         try {
-            const { nome, cozinha, descricao_resumida, descricao_detalhada, imagem, valor  } = httpResquest.body;
+            const { usuarioId, itens }:Pedidos = httpResquest.body;
 
-            if (!nome || !cozinha || !descricao_resumida || !descricao_detalhada || !valor){
+            if (!usuarioId || !itens ){
                 return {
                     statusCode: 400,
                     body: { error : 'Preencha todos os campos'}
                 }
             }
 
-            if (valor.type != 'number' && valor.value < 0){
-                return{
-                    statusCode: 400,
-                    body: {error: "O valor deve ser numerico"}
+            itens.forEach((item) => {
+                if (!item.pratoId || !item.quantidade || !item.precoUnitario){
+                    return {
+                        statusCode: 400,
+                        body: { error : 'Preencha todos os campos dos itens'}
+                    }
                 }
-            }
-            // const prato = {
-            //     nome,
-            //     cozinha,
-            //     descricao_resumida,
-            //     descricao_detalhada,
-            //     imagem,
-            //     valor
-            // }
-
-            // console.log(testePrato)
-            const prato = await Prato.create({
-                nome, 
-                cozinha,
-                descricao_resumida,
-                descricao_detalhada,
-                imagem,
-                valor
+                if (item.quantidade <= 0 || item.precoUnitario <= 0){
+                    return {
+                        statusCode: 400,
+                        body: { error : 'Quantidade e preço unitário devem ser maiores que zero'}
+                    }
+                }
+                if (!Number.isInteger(item.quantidade)){
+                    return {
+                        statusCode: 400,
+                        body: { error : 'Quantidade deve ser um número inteiro'}
+                    }
+                }
+                if (typeof item.precoUnitario !== 'number'){
+                    return {
+                        statusCode: 400,
+                        body: { error : 'Preço unitário deve ser um número'}
+                    }
+                }   
             });
+
+            let totalPedido = 0;
+            for (const item of itens){
+                totalPedido =+ item.quantidade * item.precoUnitario; 
+            }
+
+            console.log('produtoId do primeiro item:', itens[0].pratoId);
+            console.log('quantidade do primeiro item:', itens[0].quantidade);
+
+            const pedido = await Pedido.create({
+                usuarioId,
+                itens,
+                total: totalPedido,
+                status: "PENDENTE",
+                prato_id: itens[0].pratoId,
+                quantidade: itens[0].quantidade
+            });
+
             return {
                 statusCode: 201,
-                body: prato
+                body: pedido
             }
 
 
@@ -52,4 +73,4 @@ class CriarPratoController implements Controller {
     }
 }
 
-export default CriarPratoController
+export default CriarPedidoController

@@ -1,46 +1,36 @@
 import { Controller, HttpRequest, HttpResponse } from "../../interfaces";
-import Prato from "../../models/prato-model";
+import Pedido from "../../models/pedido-model";
 
-class EditarPratoController implements Controller {
+class EditarPedidoController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const {
-      nome,
-      cozinha,
-      descricao_resumida,
-      descricao_detalhada,
-      imagem,
-      valor,
-    } = httpRequest.body;
+    const { status } = httpRequest.body;
+
     const { id } = httpRequest.params
+    
     try {
-      const prato = await Prato.findByPk(id)
-      if (!prato){
-        return{
+      const prato = await Pedido.findByPk(id)
+      if (!prato) {
+        return {
           statusCode: 404,
-          body: {error: "Prato não encontrado"}
+          body: { error: "Prato não encontrado" }
         }
       }
 
       await prato.update({
-        nome,
-        cozinha,
-        descricao_resumida,
-        descricao_detalhada,
-        imagem,
-        valor,
+        status
       })
 
       return {
         statusCode: 200,
         body: prato,
       };
-    } catch (error:any) {
-        return{
-            statusCode: 500,
-            body: { error: error.message}
-        }
+    } catch (error: any) {
+      return {
+        statusCode: 500,
+        body: { error: error.message }
+      }
     }
   }
 }
 
-export default EditarPratoController
+export default EditarPedidoController

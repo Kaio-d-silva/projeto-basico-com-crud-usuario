@@ -1,34 +1,34 @@
 import { Controller,HttpRequest, HttpResponse } from "../../interfaces"
-import Prato from "../../models/prato-model";
+import Pedido from "../../models/pedido-model";
 
-class ListarPratosController implements Controller {
+class ListarPedidosController implements Controller {
     async handle(httpRequest:HttpRequest): Promise<HttpResponse> {
         try {
 
-            const pratoId = httpRequest.params.id
-            const prato = await Prato.findByPk(pratoId)
-            if (!prato && pratoId !== '{id}' && pratoId !== undefined ){
+            const pedidoId = httpRequest.params.id
+            const pedido = await Pedido.findByPk(pedidoId)
+            if (!pedido && pedidoId !== '{id}' && pedidoId !== undefined ){
                 return{
                     statusCode: 404,
-                    body: { error: 'Prato não encontrado'}
+                    body: { error: 'pedido não encontrado'}
                 }
-            }else if(pratoId !== '{id}' && pratoId !== undefined){
+            }else if(pedidoId !== '{id}' && pedidoId !== undefined){
                 return{
                     statusCode: 200,
-                    body: prato
+                    body: pedido
                 }
             }
 
-            const pratos = await Prato.findAll()
-            if (pratos.length === 0){
+            const pedidos = await Pedido.findAll()
+            if (pedidos.length === 0){
                 return{
                     statusCode: 404,
-                    body: { error: 'Nenhum prato encontrado'}
+                    body: { error: 'Nenhum pedido encontrado'}
                 }
             }
             return{
                 statusCode: 200,
-                body: pratos
+                body: pedidos
             }
         } catch (error: any) {
             return {
@@ -40,4 +40,4 @@ class ListarPratosController implements Controller {
 
 }
 
-export default ListarPratosController;
+export default ListarPedidosController;

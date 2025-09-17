@@ -1,24 +1,24 @@
 import { Controller, HttpRequest,HttpResponse } from "../../interfaces";
-import Prato from "../../models/prato-model";
+import Pedido from "../../models/pedido-model";
 
-class DeletarPratoController implements Controller {
+class DeletarPedidoController implements Controller {
     async handle(httpRequest:HttpRequest): Promise<HttpResponse>{
         const { id } = httpRequest.params
 
         try {
-            const prato = await Prato.findByPk(id)
+            const pedido = await Pedido.findByPk(id)
+            console.log('Pedido encontrado:', pedido);
 
-
-            if(!prato){
+            if(!pedido){
                 return{
                     statusCode: 404,
-                    body: {error: "Prato não encontrado"}
+                    body: {error: "Pedido não encontrado"}
                 }
             }
-            await prato.destroy();
+            await pedido.destroy();
             return{
                 statusCode: 204,
-                body: {message: "Prato deletado com sucesso"}
+                body: {message: "Pedido deletado com sucesso"}
             }
 
             
@@ -30,4 +30,4 @@ class DeletarPratoController implements Controller {
         }
     }
 }
-export default DeletarPratoController
+export default DeletarPedidoController
