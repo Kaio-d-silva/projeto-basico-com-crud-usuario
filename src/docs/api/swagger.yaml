@@ -252,7 +252,7 @@ paths:
           description: Token inválido ou expirado
         500:
           description: Algum erro aconteceu
-  /pedidos:
+  /api/pedidos:
     get:
       summary: Lista todos os pedidos
       security: [ { bearerAuth: [] } ]
@@ -280,7 +280,7 @@ paths:
             example:
               usuarioId: "u-123"
               itens:
-                - produtoId: "p-1"
+                - pratoId: "p-1"
                   quantidade: 2
                   precoUnitario: 10
       responses:
@@ -296,7 +296,7 @@ paths:
           description: Token inválido ou ausente 
         403:  
           description: Sem permissão 
-  /pedidos/{id}:
+  /api/pedidos/{id}:
     get:
       summary: Busca pedido por ID
       security: [ { bearerAuth: [] } ]
