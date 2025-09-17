@@ -21,15 +21,18 @@ Pedido.init(
        },
        cliente_nome:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 'Cliente'
        },
        cliente_endereco:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 'Endereço do cliente'
        },
        cliente_telefone:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 'Telefone do cliente'
        },
        prato_id: {
         type: DataTypes.INTEGER,
