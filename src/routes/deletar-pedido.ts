@@ -1,10 +1,10 @@
 import { Router } from "express";
 import authMiddleware from "../middlewares/auth-middleware";
-import DeletarPratoController from "../controllers/prato/deletar-prato";
+import DeletarPedidoController from "../controllers/pedido/deletar-pedido";
 import adaptRoute from "../adapters/express-route-adapter";
 export default (router: Router): void => {
   router.delete(
-    "/pratos/:id",
-    adaptRoute(new DeletarPratoController())
+    "/pedidos/:id",
+    adaptRoute(new DeletarPedidoController())
   );
 };
