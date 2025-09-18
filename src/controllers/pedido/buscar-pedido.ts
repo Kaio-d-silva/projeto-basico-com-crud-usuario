@@ -1,23 +1,20 @@
 import { Controller, HttpRequest, HttpResponse, UpdatePedidoDTO } from "../../interfaces";
 import { PedidoService } from "../../service/pedido-service";
 
-export class ListarPedidoController implements Controller {
+export class BuscarPedidoController implements Controller {
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-
         try {
-
             const pedidoService = new PedidoService();
-            const pedidos = pedidoService.getPedidos();
+            const pedido = await pedidoService.getPedidoById(httpRequest.params.id);
             return {
-                statusCode: 200,
-                body: pedidos
+                statusCode: 201,
+                body: pedido
             };
         } catch (error: any) {
             return {
                 statusCode: 500,
                 body: { error: error.message }
             };
-
         }
     }
 }

@@ -1,33 +1,24 @@
-import { Controller, HttpRequest,HttpResponse } from "../../interfaces";
-import Pedido from "../../models/pedido-model";
+import { Controller, HttpRequest, HttpResponse, UpdatePedidoDTO } from "../../interfaces";
+import { PedidoService } from "../../service/pedido-service";
 
-class DeletarPedidoController implements Controller {
-    async handle(httpRequest:HttpRequest): Promise<HttpResponse>{
-        const { id } = httpRequest.params
+export class DeletarPedidoController implements Controller {
+    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
 
         try {
-            const pedido = await Pedido.findByPk(id)
-            console.log('Pedido encontrado:', pedido);
 
-            if(!pedido){
-                return{
-                    statusCode: 404,
-                    body: {error: "Pedido não encontrado"}
-                }
-            }
-            await pedido.destroy();
-            return{
+            const pedidoService = new PedidoService();
+            const pedidoId = httpRequest.params.id;
+            const response = pedidoService.deletePedido(pedidoId!);
+            return {
                 statusCode: 204,
-                body: {message: "Pedido deletado com sucesso"}
-            }
+                body: {  }
+            };
+        } catch (error: any) {
+            return {
+                statusCode: 500,
+                body: { error: error.message }
+            };
 
-            
-        } catch (error:any) {
-            return{
-                statusCode:500,
-                body: {error: error.message}
-            }
         }
     }
 }
-export default DeletarPedidoController

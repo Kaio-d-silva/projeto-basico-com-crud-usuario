@@ -1,7 +1,8 @@
 import { Router } from "express";
 import adaptRoute from "../adapters/express-route-adapter";
-import EditarPedidoController from "../controllers/pedido/editar-pedido"
+import { AtualizarPedidoController } from "../controllers/pedido/atualizar-pedido";
+
 
 export default (router: Router): void => {
-    router.put("/pedidos/:id", adaptRoute(new EditarPedidoController()))
+    router.put("/pedidos/:id", adaptRoute(new AtualizarPedidoController()))
 }

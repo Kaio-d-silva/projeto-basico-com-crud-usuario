@@ -1,7 +1,7 @@
 import { Router } from "express";
 import adaptRoute from "../adapters/express-route-adapter";
-import ListarPedidosController from "../controllers/pedido/listar-pedido";
+import { BuscarPedidoController } from "../controllers/pedido/buscar-pedido";
 
-export default (router:Router): void => {
-    router.get('/pedidos/:id', adaptRoute(new ListarPedidosController()))
-}
+export default (router: Router): void => {
+    router.get("/pedidos/{id}", adaptRoute(new BuscarPedidoController()));
+};
