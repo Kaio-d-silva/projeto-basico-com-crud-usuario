@@ -255,7 +255,8 @@ paths:
   /api/pedidos:
     get:
       summary: Lista todos os pedidos
-      security: [ { bearerAuth: [] } ]
+      security: 
+       bearerAuth: [] 
       tags: [Pedidos]
       responses:
         200:
@@ -266,17 +267,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Pedido'
-        401: { description: Token inválido ou ausente }
-        403: { description: Sem permissão }
+        401: 
+         description: Token inválido ou ausente 
+        403: 
+         description: Sem permissão 
     post:
       summary: Cria um pedido
-      security: [ { bearerAuth: [] } ] 
+      security: 
+       bearerAuth: [] 
       tags: [Pedidos]
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/CreatePedido' }
+            schema: 
+             $ref: '#/components/schemas/CreatePedido' 
             example:
               usuarioId: "u-123"
               itens:
@@ -299,7 +304,8 @@ paths:
   /api/pedidos/{id}:
     get:
       summary: Busca pedido por ID
-      security: [ { bearerAuth: [] } ]
+      security: 
+       bearerAuth: [] 
       tags: [Pedidos]
       parameters:
         - in: path
@@ -324,13 +330,15 @@ paths:
           description: Não encontrado 
     put:
       summary: Atualiza pedido
-      security: [ { bearerAuth: [] } ]
+      security: 
+       bearerAuth: [] 
       tags: [Pedidos]
       parameters:
         - in: path
           name: id
           required: true
-          schema: { type: string }
+          schema: 
+           type: string 
           example: "ped-001"
       requestBody:
         required: true
@@ -341,7 +349,8 @@ paths:
             examples:
               atualizarStatus: 
                 summary: Marcar pedido como pago
-                value: { status: PAGO}
+                value: 
+                 status: PAGO
               atualizarItens: 
                 summary: Atualizar itens do pedido
                 value: 
@@ -366,7 +375,8 @@ paths:
           description: Não encontrado 
     delete:
       summary: Remove pedido
-      security: [ { bearerAuth: [] } ]
+      security: 
+        bearerAuth: [] 
       tags: [Pedidos]
       parameters:
         - in: path
