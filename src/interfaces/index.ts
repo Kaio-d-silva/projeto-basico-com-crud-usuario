@@ -1,3 +1,5 @@
+import { StatusPedido } from "../enums/status-pedido";
+
 export interface Controller {
   handle: (httpRequest: HttpRequest) => Promise<HttpResponse>;
 }
@@ -10,4 +12,29 @@ export interface HttpRequest {
 export interface HttpResponse {
   statusCode: number;
   body: any;
+}
+
+export interface Pedidos {
+  usuarioId: number;
+  itens: Array<{
+    pratoId: number;
+    quantidade: number;
+    precoUnitario: number;
+  }>;
+}
+
+export interface PedidoItemDTO {
+  produtoId: string;
+  quantidade: number;
+  precoUnitario: number;
+}
+
+export interface CreatePedidoDTO {
+  usuarioId: string;
+  itens: PedidoItemDTO[];
+}
+
+export interface UpdatePedidoDTO {
+  itens?: PedidoItemDTO[];
+  status?: StatusPedido;
 }

@@ -35,7 +35,7 @@ export default (router: Router): void => {
    */
   router.put(
     "/users/:id",
-    authMiddleware,
+    // authMiddleware,
     adaptRoute(new EditarUsuarioController())
   );
 };

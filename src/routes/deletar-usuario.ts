@@ -28,7 +28,6 @@ export default (router: Router): void => {
    */
   router.delete(
     "/users/:id",
-    authMiddleware,
     adaptRoute(new DeletarUsuarioController())
   );
 };
