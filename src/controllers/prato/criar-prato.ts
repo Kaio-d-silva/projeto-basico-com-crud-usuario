@@ -1,55 +1,35 @@
 import { Controller, HttpRequest, HttpResponse } from "../../interfaces";
 import Prato from "../../models/prato-model";
 
-class CriarPratoController implements Controller {
-    async handle(httpResquest: HttpRequest): Promise<HttpResponse>{
+export class CriarPratoController implements Controller {
+    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+
         try {
-            const { nome, cozinha, descricao_resumida, descricao_detalhada, imagem, valor  } = httpResquest.body;
-
-            if (!nome || !cozinha || !descricao_resumida || !descricao_detalhada || !valor){
-                return {
-                    statusCode: 400,
-                    body: { error : 'Preencha todos os campos'}
-                }
-            }
-
-            if (valor.type != 'number' && valor.value < 0){
-                return{
-                    statusCode: 400,
-                    body: {error: "O valor deve ser numerico"}
-                }
-            }
-            // const prato = {
-            //     nome,
-            //     cozinha,
-            //     descricao_resumida,
-            //     descricao_detalhada,
-            //     imagem,
-            //     valor
-            // }
-
-            // console.log(testePrato)
-            const prato = await Prato.create({
-                nome, 
+            const { nome, cozinha, descricao_resumida, descricao_detalhada, imagem, valor } = httpRequest.body;
+        
+            const novoPrato = {
+                nome,
                 cozinha,
                 descricao_resumida,
                 descricao_detalhada,
                 imagem,
                 valor
-            });
+            };
+    
+            await Prato.create(novoPrato);
+
+            const pratoSalvo = await Prato.findOne({ where: { nome } });
+        
             return {
-                statusCode: 201,
-                body: prato
-            }
-
-
+            statusCode: 201,
+            body: pratoSalvo
+            };
         } catch (error: any) {
-            return{
+            return {
                 statusCode: 500,
-                body: { error : error.message }
-            }
+                body: { error: error.message }
+            };
+            
         }
     }
 }
-
-export default CriarPratoController

@@ -1,20 +1,22 @@
-// src/middlewares/auth-middleware.ts
-import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
-export default async function authMiddleware(req: Request, res: Response,
-  next: NextFunction) {
+import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
+export default async function authMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
-    const authHeader = req.headers.authorization || '';
-    const [, token] = authHeader.split(' ');
-    if (!token) return res.status(401).json({ message: 'Token ausente' });
+    const authHeader = req.headers.authorization || "";
+    const [, token] = authHeader.split(" ");
+    if (!token) return res.status(401).json({ message: "Token ausente" });
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
     (req as any).user = {
       id: decoded.sub,
       email: decoded.email,
-      role: decoded.role
+      role: decoded.role,
     };
     return next();
   } catch (err) {
-    return res.status(401).json({ message: 'Token inválido' });
+    return res.status(401).json({ message: "Token inválido" });
   }
 }

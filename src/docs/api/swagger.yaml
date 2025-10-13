@@ -44,7 +44,7 @@ paths:
           name: id
           schema:
             type: integer
-          required: true
+          required: false
           description: O ID do usuário
       responses:
         200:
@@ -252,11 +252,11 @@ paths:
           description: Token inválido ou expirado
         500:
           description: Algum erro aconteceu
-  /api/pedidos:
+  /pedidos:
     get:
       summary: Lista todos os pedidos
       security: 
-       bearerAuth: [] 
+        - bearerAuth: []
       tags: [Pedidos]
       responses:
         200:
@@ -267,133 +267,119 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Pedido'
-        401: 
-         description: Token inválido ou ausente 
-        403: 
-         description: Sem permissão 
+        401:
+          description: Token inválido ou ausente
+        403:
+          description: Sem permissão
     post:
       summary: Cria um pedido
       security: 
-       bearerAuth: [] 
+        - bearerAuth: []
       tags: [Pedidos]
       requestBody:
         required: true
         content:
           application/json:
-            schema: 
-             $ref: '#/components/schemas/CreatePedido' 
+            schema: { $ref: '#/components/schemas/CreatePedido' }
             example:
-              usuarioId: "u-123"
+              usuarioId: 1
               itens:
-                - pratoId: "p-1"
+                - produtoId: 1
                   quantidade: 2
                   precoUnitario: 10
       responses:
-        201:  
-          description: Criado 
-          content: 
-            application/json: 
-              schema:
-                $ref: '#/components/schemas/Pedido'
-        400:  
-          description: Erro de validação 
-        401:  
-          description: Token inválido ou ausente 
-        403:  
-          description: Sem permissão 
-  /api/pedidos/{id}:
+        201:
+          description: Criado
+        400:
+          description: Erro de validação
+        401:
+          description: Token inválido ou ausente
+        403:
+          description: Sem permissão
+  /pedidos/{id}:
     get:
       summary: Busca pedido por ID
       security: 
-       bearerAuth: [] 
+        - bearerAuth: []
       tags: [Pedidos]
       parameters:
         - in: path
           name: id
           required: true
-          schema: 
-            type: string 
-          example: "ped-001"
+          schema:
+            type: integer
+          example: 1
       responses:
         200:
-          description: OK
-          content: 
-            application/json: 
+          description: Buscar pedido por ID
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/Pedido'
-
-        401: 
-          description: Token inválido ou ausente 
-        403: 
-          description: Sem permissão 
-        404: 
-          description: Não encontrado 
+        401:
+          description: Token inválido ou ausente
+        403:
+          description: Sem permissão
+        404:
+          description: Não encontrado
     put:
       summary: Atualiza pedido
       security: 
-       bearerAuth: [] 
+        - bearerAuth: []
       tags: [Pedidos]
       parameters:
         - in: path
           name: id
           required: true
           schema: 
-           type: string 
-          example: "ped-001"
+            type: integer
+          example: 1
       requestBody:
         required: true
         content:
           application/json:
             schema: 
-              $ref: '#/components/schemas/UpdatePedido' 
-            examples:
-              atualizarStatus: 
-                summary: Marcar pedido como pago
-                value: 
-                 status: PAGO
-              atualizarItens: 
-                summary: Atualizar itens do pedido
-                value: 
-                  itens:
-                    - pratoId: "p-100"
-                      quantidade: 3
-                      precoUnitario: 29.90
+              $ref: '#/components/schemas/UpdatePedido'
+            example:
+              status: "PAGO"
       responses:
-        200: 
-          description: OK 
+        200:
+          description: Pedido atualizado
           content: 
             application/json: 
-              schema:
+              schema: 
                 $ref: '#/components/schemas/Pedido'
-        400: 
-          description: Erro de validação 
-        401: 
+        400:
+          description: Erro de validação
+        401:
           description: Token inválido ou ausente 
-        403: 
-          description: Sem permissão 
-        404: 
-          description: Não encontrado 
+        403:
+          description: Sem permissão
+        404:
+          description: Não encontrado
     delete:
       summary: Remove pedido
       security: 
-        bearerAuth: [] 
+        - bearerAuth: []
       tags: [Pedidos]
       parameters:
         - in: path
           name: id
           required: true
-          schema: 
-            type: string 
-          example: "ped-001"
+          schema:
+            type: integer
+          example: 1
       responses:
-        204: 
-          description: Sem conteúdo 
-        401: 
-          description: Token inválido ou ausente 
-        403: 
-          description: Sem permissão 
-        404: 
-          description: Não encontrado 
+        204:
+          description: Sem conteúdo
+        401:
+          description: Token inválido ou ausente
+        403:
+          description: Sem permissão
+        404:
+          description: Não encontrado
+
+
 components:
   securitySchemes:
     bearerAuth:
@@ -471,76 +457,64 @@ components:
     PedidoItem:
       type: object
       properties:
-        pratoId:
-          type: integer
-          description: O ID do prato
+        produtoId: 
+          type: integer 
+          example: 1
         quantidade:
           type: integer
-          description: A quantidade do prato no pedido
           minimum: 1
-        precoUnitario:
+          example: 2
+        precoUnitario: 
           type: number
-          description: O preço unitário do prato no momento do pedido
-          example: 29.90
-      required:
-        - pratoId
-        - quantidade 
-        - precoUnitario
-      example:
-        pratoId: 1
-        quantidade: 2
+          minimum: 0
+          example: 10.5
+      required: [produtoId, quantidade, precoUnitario]
     Pedido:
       type: object
       properties:
-        id:  
-          type: string
-        usuarioId:  
-          type: string
+        id:
+          type: integer 
+          example: 1
+        usuarioId:
+          type: integer
+          example: 1
         itens:
           type: array
           items:
             $ref: '#/components/schemas/PedidoItem'
-        total:  
+        total:
           type: number
-        status:  
+          example: 21.0
+        status:
           type: string
           enum: [CRIADO, PAGO, CANCELADO, ENVIADO]
-        createdAt:  
+          example: CRIADO
+        createdAt:
           type: string
           format: date-time
-        updatedAt:  
+          example: "2025-09-15T10:00:00Z"
+        updatedAt:
           type: string
           format: date-time
-      example:
-        id: "p-123"
-        usuarioId: "u-123"
+          example: "2025-09-15T10:00:00Z"
     CreatePedido:
       type: object
       properties:
-        usuarioId:  
-          type: string
+        usuarioId:
+          type: integer, example: 1
         itens:
           type: array
           items:
             $ref: '#/components/schemas/PedidoItem'
-      required: 
-        - usuarioId 
-        - itens
-      example:
-        usuarioId: "u-123"
-        itens:
-          - pratoId: "p-100"
-            quantidade: 2
-            precoUnitario: 29.90
+      required: [usuarioId, itens]
     UpdatePedido:
       type: object
       properties:
         itens:
           type: array
-          items:
+          items: 
             $ref: '#/components/schemas/PedidoItem'
-        status:  
-          type: string
-          enum: [CRIADO, PAGO, CANCELADO, ENVIADO]
-      example:
-        status: PAGO
+          status: 
+            type: string
+            enum: [CRIADO, PAGO, CANCELADO, ENVIADO]
+            example: PAGO

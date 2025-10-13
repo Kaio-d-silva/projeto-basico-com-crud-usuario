@@ -2,17 +2,16 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database';
 import User from './user-model';
 
-class Funcionario extends Model {
+export class Cliente extends Model {
   id!: number;
   nome!: string;
-  email!: string;
-  cargo!: string;
+  endereco!: string;
   telefone!: string;
   userId!: number;
   user!: User;
 }
 
-Funcionario.init(
+Cliente.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -23,7 +22,7 @@ Funcionario.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    cargo: {
+    endereco: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -42,8 +41,8 @@ Funcionario.init(
   },
   {
     sequelize,
-    modelName: 'Funcionario',
+    modelName: 'Cliente',
   }
 );
-Funcionario.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-export default Funcionario;
+Cliente.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+export default Cliente;
