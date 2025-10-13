@@ -1,9 +1,4 @@
-import User from '../../models/user-model';
-import bcrypt from 'bcrypt';
-import { Controller, HttpRequest, HttpResponse } from '../../interfaces';
-import jwt, { SignOptions } from 'jsonwebtoken';
-import { ENV } from '../../config/env';
-import Cliente from '../../models/cliente-model';
+import { Controller, HttpRequest, HttpResponse } from '../../protocols';
 import { LoginService } from '../../service/login-service';
 
 export class LoginController implements Controller {
@@ -26,20 +21,10 @@ export class LoginController implements Controller {
       if (!perfil) {
         return {
           statusCode: 404,
-          body: { message: 'Perfil não encontrado' },
+          body: { message: 'Usuário não encontrado, verificar cadastro.' },
         };
       }
       const user = perfil.user;
-
-      if(user.role === 'Cliente') {
-        const cliente = await Cliente.findOne({ where: { userId: user.id } });
-        if (!cliente) {
-          return {
-            statusCode: 404,
-            body: { message: 'Usuário não encontrado, verificar cadastro.' },
-          };
-        }
-      }
 
       const { token, refreshToken } = loginService.gerarTokens(user);
 
