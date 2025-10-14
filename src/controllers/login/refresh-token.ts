@@ -2,6 +2,8 @@
 import User from '../../models/user-model';
 import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken';
 import { Controller, HttpRequest, HttpResponse } from '../../protocols';
+import { badRequest, forbidden, ok, serverError } from '../../helpers/http-helper';
+import { MissingParamError } from '../../errors';
 
 class RefreshTokenController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -9,10 +11,7 @@ class RefreshTokenController implements Controller {
       const { refreshToken } = httpRequest.body;
 
       if (!refreshToken) {
-        return {
-          statusCode: 400,
-          body: { message: 'Refresh token é obrigatório' },
-        };
+        return badRequest( new MissingParamError("Refresh token"))
       }
 
       // Verifique o refresh token
@@ -26,10 +25,7 @@ class RefreshTokenController implements Controller {
       // Opcional: Verifique se o refresh token ainda é válido no banco de dados
       const user = await User.findByPk(decoded.id);
       if (!user) {
-        return {
-          statusCode: 403,
-          body: { message: 'Refresh token inválido' },
-        };
+        return forbidden({ message: 'Refresh token inválido' })
       }
 
       const signOptions: SignOptions = {
@@ -41,16 +37,11 @@ class RefreshTokenController implements Controller {
         process.env.JWT_SECRET || (() => { throw new Error('JWT_SECRET is not defined'); })(),
         signOptions
       );
+      return ok({ token: newAccessToken })
 
-      return {
-        statusCode: 200,
-        body: { token: newAccessToken },
-      };
     } catch (error: any) {
-      return {
-        statusCode: 500,
-        body: { message: 'Erro interno do servidor', error: error.message },
-      };
+      return serverError()
+      
     }
   }
 }

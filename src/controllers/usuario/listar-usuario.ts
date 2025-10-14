@@ -1,40 +1,26 @@
-import User from '../../models/user-model';
-import { Controller, HttpRequest, HttpResponse } from '../../protocols';
-import { UsuarioService } from '../../service/usuario-service';
+import { notFount, ok, serverError } from "../../helpers/http-helper";
+import User from "../../models/user-model";
+import { Controller, HttpRequest, HttpResponse } from "../../protocols";
+import { UsuarioService } from "../../service/usuario-service";
 
 class ListarUsuarioController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const userId = httpRequest.params.id;
-      const usuarioService = new UsuarioService()
+      const usuarioService = new UsuarioService();
       const usuario = await usuarioService.buscarUsuarioPorId(userId);
-      if (!usuario && userId !== '{id}' && userId !== undefined) {
-        return {
-          statusCode: 404,
-          body: { error: 'Usuário não encontrado' },
-        };
-      } else if (userId !== '{id}' && userId !== undefined) {
-        return {
-          statusCode: 200,
-          body: usuario,
-        };
+      if (!usuario && userId !== "{id}" && userId !== undefined) {
+        return notFount({ error: "Usuário não encontrado" });
+      } else if (userId !== "{id}" && userId !== undefined) {
+        return ok(usuario);
       }
       const usuarios = await usuarioService.buscaTodosUsuarios();
       if (usuarios.length === 0) {
-        return {
-          statusCode: 404,
-          body: { error: 'Nenhum usuário encontrado' },
-        };
+        return notFount({ error: "Nenhum usuário encontrado" });
       }
-      return {
-        statusCode: 200,
-        body: usuarios,
-      };
+      return ok(usuarios);
     } catch (error: any) {
-      return {
-        statusCode: 500,
-        body: { error: error.message },
-      };
+      return serverError();
     }
   }
 }

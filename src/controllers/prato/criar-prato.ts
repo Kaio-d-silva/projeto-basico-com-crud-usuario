@@ -1,3 +1,4 @@
+import { created, serverError } from "../../helpers/http-helper";
 import Prato from "../../models/prato-model";
 import { Controller, HttpRequest, HttpResponse } from "../../protocols";
 
@@ -19,17 +20,9 @@ export class CriarPratoController implements Controller {
             await Prato.create(novoPrato);
 
             const pratoSalvo = await Prato.findOne({ where: { nome } });
-        
-            return {
-            statusCode: 201,
-            body: pratoSalvo
-            };
+            return created(pratoSalvo)
         } catch (error: any) {
-            return {
-                statusCode: 500,
-                body: { error: error.message }
-            };
-            
+            return serverError()
         }
     }
 }

@@ -9,7 +9,7 @@ class CriarUsuarioController implements Controller {
       const usuarioService = new UsuarioService();
       const user = await usuarioService.buscarPorEmail( email);
       if (user) {
-        return badRequest(new InvalidParamError("email"));
+        return badRequest(new InvalidParamError("email ja cadastrado"));
       }
       const usuario = await usuarioService.criarUsuario({
         nome,

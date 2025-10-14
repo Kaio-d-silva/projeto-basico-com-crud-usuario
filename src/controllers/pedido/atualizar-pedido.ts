@@ -1,3 +1,4 @@
+import { created, serverError } from "../../helpers/http-helper";
 import { UpdatePedidoDTO } from "../../interfaces";
 import { Controller, HttpRequest, HttpResponse } from "../../protocols";
 import { PedidoService } from "../../service/pedido-service";
@@ -11,15 +12,10 @@ export class AtualizarPedidoController implements Controller {
             const pedidoData: UpdatePedidoDTO = httpRequest.body;
             const id = httpRequest?.params.id;
             const pedidoAtualizado = await pedidoService.updatePedido(id, pedidoData);
-            return {
-                statusCode: 201,
-                body: pedidoAtualizado
-            };
+            return created(pedidoAtualizado)
+
         } catch (error: any) {
-            return {
-                statusCode: 500,
-                body: { error: error.message }
-            };
+            return serverError()
 
         }
     }
