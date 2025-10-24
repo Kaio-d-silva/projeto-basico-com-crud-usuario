@@ -3,6 +3,6 @@ import adaptRoute from "../adapters/express-route-adapter";
 import ListarPratoController from "../controllers/prato/listar-prato";
 
 export default (router: Router): void => {
-  router.get("/pratos/{:id}",
+  router.get("/pratos",
     adaptRoute(new ListarPratoController()));
 };
